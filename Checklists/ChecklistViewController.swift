@@ -12,6 +12,18 @@ class ChecklistViewController: UITableViewController {
     
     var todoList: ToDoList
     
+    @IBAction func addItem(_ sender: Any) {
+        print("added item")
+        
+        let newRowIndex = todoList.todos.count
+        _ = todoList.newToDo()
+        
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        tableView.insertRows(at: indexPaths, with: .automatic)
+    }
+    
+    
     required init?(coder aDecoder: NSCoder) {
         
         todoList = ToDoList()
@@ -22,7 +34,7 @@ class ChecklistViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.prefersLargeTitles = true 
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -49,17 +61,25 @@ class ChecklistViewController: UITableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        todoList.todos.remove(at: indexPath.row)
+        let indexPaths = [indexPath]
+        tableView.deleteRows(at: indexPaths, with: .automatic)
+    }
+    
+    //metoda text
     func configureText(for cell: UITableViewCell, with item: ChecklistItem){
         if let label = cell.viewWithTag(1000) as? UILabel {
             label.text = item.text
         }
     }
     
+    // metoda Checkmark
     func configureCheckmark(for cell: UITableViewCell, with item: ChecklistItem) {
         if item.checked {
-            cell.accessoryType = .none
-        } else {
             cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
         }
         item.toggleChecked()
     }
