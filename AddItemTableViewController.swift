@@ -18,7 +18,8 @@ class AddItemTableViewController: UITableViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    
+    @IBOutlet weak var textField: UITextField!
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
